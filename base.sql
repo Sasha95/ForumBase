@@ -47,5 +47,5 @@ INSERT INTO post VALUES
 
 COMMIT;
 
-
---SELECT person_id, max(created_at) FROM POST GROUP BY person_id 
+--SELECT person_id, max(created_at) FROM post GROUP BY person_id
+--SELECT DISTINCT person_id, max(created_at) OVER (PARTITION BY person_id ) FROM post 
