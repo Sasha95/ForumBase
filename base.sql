@@ -1,4 +1,4 @@
-п»ї--CREATE SCHEMA forum;
+--CREATE SCHEMA forum;
 --ALTER DATABASE mangir SET search_path TO forum, public;
 
 SET search_path TO forum, public;
@@ -33,19 +33,29 @@ CREATE TABLE likes(
 );
 
 INSERT INTO person VALUES 
-(default, 'РРіРѕСЂСЊ','С…РѕР»РѕСЃС‚'),
-(default, 'РЎР°С€Р°','Р¶РµРЅР°С‚');
+(default, 'Игорь','холост'),
+(default, 'Саша','женат');
 INSERT INTO account VALUES 
 (default, 'igor','pass','igor@gmail.com',1), 
 (default, 'sasha','pass','sasha@gmail.com',2);
 INSERT INTO post VALUES 
-(default, 'РђРІС‚РѕРјРѕР±РёР»СЊ', 'РљСЂР°СЃРЅР°СЏ РјР°С€РёРЅР°', '09-18-2017', default, 1)
+(default, 'Автомобиль', 'Красная машина', '09-18-2017', default, 1)
 INSERT INTO post VALUES 
-(default, 'РњР°С€РёРЅР°', 'РЎРёРЅСЏСЏ РјР°С€РёРЅР°', default, default, 2)
+(default, 'Машина', 'Синяя машина', default, default, 2)
 INSERT INTO post VALUES 
-(default, 'Р’РµР»РёРє', 'Р—РµР»РµРЅС‹Р№ РІРµР»РёРє', default, default, 2)
+(default, 'Велик', 'Зеленый велик', default, default, 2)
 
 COMMIT;
 
 --SELECT person_id, max(created_at) FROM post GROUP BY person_id
 --SELECT DISTINCT person_id, max(created_at) OVER (PARTITION BY person_id ) FROM post 
+
+CREATE OR REPLACE FUNCTION my_func(name1 text, beg integer, end1 int) RETURNS text
+AS $$SELECT SUBSTRING(name1,beg,end1)$$ LANGUAGE SQL;
+
+SELECT title, my_func(title, 1, 2) FROM post;
+
+CREATE OR REPLACE FUNCTION my_func(person_id int) RETURNS timestamp
+AS $$SELECT max(created_at) FROM post as p2 WHERE my_func.person_id = p2.person_id$$ LANGUAGE SQL;
+
+SELECT person_id, title, created_at FROM post WHERE created_at = my_func(person_id)
