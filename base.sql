@@ -69,3 +69,6 @@ return new;
 end;
 $$ 
 LANGUAGE plpgsql
+
+CREATE TRIGGER on_post_update BEFORE UPDATE ON post 
+FOR EACH ROW EXECUTE PROCEDURE myfunc()
