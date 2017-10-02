@@ -33,17 +33,17 @@ CREATE TABLE likes(
 );
 
 INSERT INTO person VALUES 
-(default, 'Игорь','холост'),
-(default, 'Саша','женат');
+(default, 'Г€ГЈГ®Г°Гј','ГµГ®Г«Г®Г±ГІ'),
+(default, 'Г‘Г ГёГ ','Г¦ГҐГ­Г ГІ');
 INSERT INTO account VALUES 
 (default, 'igor','pass','igor@gmail.com',1), 
 (default, 'sasha','pass','sasha@gmail.com',2);
 INSERT INTO post VALUES 
-(default, 'Автомобиль', 'Красная машина', '09-18-2017', default, 1)
+(default, 'ГЂГўГІГ®Г¬Г®ГЎГЁГ«Гј', 'ГЉГ°Г Г±Г­Г Гї Г¬Г ГёГЁГ­Г ', '09-18-2017', default, 1)
 INSERT INTO post VALUES 
-(default, 'Машина', 'Синяя машина', default, default, 2)
+(default, 'ГЊГ ГёГЁГ­Г ', 'Г‘ГЁГ­ГїГї Г¬Г ГёГЁГ­Г ', default, default, 2)
 INSERT INTO post VALUES 
-(default, 'Велик', 'Зеленый велик', default, default, 2)
+(default, 'Г‚ГҐГ«ГЁГЄ', 'Г‡ГҐГ«ГҐГ­Г»Г© ГўГҐГ«ГЁГЄ', default, default, 2)
 
 COMMIT;
 
@@ -59,3 +59,13 @@ CREATE OR REPLACE FUNCTION my_func(person_id int) RETURNS timestamp
 AS $$SELECT max(created_at) FROM post as p2 WHERE my_func.person_id = p2.person_id$$ LANGUAGE SQL;
 
 SELECT person_id, title, created_at FROM post WHERE created_at = my_func(person_id)
+
+
+CREATE FUNCTION myfunc() RETURNS TRIGGER AS 
+$$
+begin
+new.edited_at:=now();
+return new;
+end;
+$$ 
+LANGUAGE plpgsql
