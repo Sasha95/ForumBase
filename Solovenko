@@ -1,0 +1,20 @@
+CREATE OR REPLACE FUNCTION title_up_in(title2 varchar(200), post2 text, person_id integer) RETURNS post AS 
+$$
+declare 
+flag boolean=false;
+p post;
+begin
+for p in (SELECT * FROM post as pos WHERE pos.title=title2)
+	loop
+		flag = true;
+		UPDATE post SET title=title2 WHERE id=p.id; 
+	end loop;
+if flag==false THEN
+	INSERT INTO post (title, post, person_id) VALUES (title_up_in.title, title_up_in.post, title_up_in.person_id);
+end if;
+
+end;
+$$ 
+LANGUAGE plpgsql;
+
+SELECT * FROM title_up_in('тест', 'f3ewfgwehf', 1);
