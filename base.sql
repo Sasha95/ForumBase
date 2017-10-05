@@ -72,3 +72,30 @@ LANGUAGE plpgsql
 
 CREATE TRIGGER on_post_update BEFORE UPDATE ON post 
 FOR EACH ROW EXECUTE PROCEDURE myfunc()
+
+
+CREATE OR REPLACE FUNCTION registration(login varchar(20), password varchar(20), email text, name varchar(100)) RETURNS void AS 
+$$
+declare 
+per_id int;
+begin
+  INSERT INTO person (name) VALUES (name)
+    RETURNING id INTO per_id;
+  INSERT INTO account (login, password, email, person_id) VALUES (login, password, email, per_id);
+end;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER; 
+
+CREATE OR REPLACE FUNCTION registration(login varchar(20), password varchar(20), email text, name varchar(100), status text) RETURNS void AS 
+$$
+declare 
+per_id int;
+begin
+  INSERT INTO person (name, status) VALUES (name, status)
+    RETURNING id INTO per_id;
+  INSERT INTO account (login, password, email, person_id) VALUES (login, password, email, per_id);
+end;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER;
+
+SELECT * FROM registration('Vasyewfewa3', '123', 'rfew2@mail.ru', 'Ва11', 'неженат');
