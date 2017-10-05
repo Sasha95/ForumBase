@@ -19,3 +19,6 @@ $$
 LANGUAGE plpgsql;
 
 SELECT * FROM title_up_in('тест', 'f3ewfgwehfgvregregerhnjhruerhj', 1);
+
+
+почему Serial  инкрементируется при  каждом запросе? О_О
