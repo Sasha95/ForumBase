@@ -121,3 +121,27 @@ CREATE TYPE rols AS ENUM ('anonim_mangir','user_mangir','moderator_mangir','admi
 
 CREATE TYPE jwt AS (role roles, person_id int)
 
+CREATE OR REPLACE FUNCTION change_password(password varchar(20), person_id int) RETURNS void AS 
+$$
+begin
+  UPDATE account SET hash = crypt(password, gen_salt('md5')) WHERE account.id = change_password.person_id;
+end;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER;
+
+SELECT * FROM change_password('123456', 6)
+
+CREATE OR REPLACE FUNCTION authentication(login varchar(20), password varchar(20)) RETURNS jwt AS 
+$$
+declare ac account;
+begin
+  SELECT * INTO ac FROM account WHERE account.login = authentication.login;
+  if ac.hash = crypt(password, ac.hash) THEN  
+    RETURN (ac.role, ac.person_id)::jwt;
+  ELSE RETURN NULL;
+  end if;
+end;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER;
+
+SELECT * FROM authentication('Vasya', '123456')
