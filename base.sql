@@ -106,3 +106,6 @@ CREATE ROLE moderator_mangir;
 CREATE ROLE admin_mangir;
 
 CREATE TYPE rols AS ENUM ('anonim_mangir','user_mangir','moderator_mangir','admin_mangir');
+
+CREATE TYPE jwt AS (role roles, person_id int)
+
