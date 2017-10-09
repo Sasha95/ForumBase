@@ -99,3 +99,10 @@ $$
 LANGUAGE plpgsql SECURITY DEFINER;
 
 SELECT * FROM registration('Vasyewfewa3', '123', 'rfew2@mail.ru', 'Ва11', 'неженат');
+
+CREATE ROLE anonim_mangir;
+CREATE ROLE user_mangir;
+CREATE ROLE moderator_mangir;
+CREATE ROLE admin_mangir;
+
+CREATE TYPE rols AS ENUM ('anonim_mangir','user_mangir','moderator_mangir','admin_mangir');
