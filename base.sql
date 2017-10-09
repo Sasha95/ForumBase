@@ -97,6 +97,18 @@ begin
 end;
 $$ 
 LANGUAGE plpgsql SECURITY DEFINER;
+--хэш
+CREATE OR REPLACE FUNCTION registration(login varchar(20), password varchar(20), email text, name varchar(100), status text) RETURNS void AS 
+$$
+declare 
+per_id int;
+begin
+  INSERT INTO person (name, status) VALUES (name, status)
+    RETURNING id INTO per_id;
+  INSERT INTO account (login, hash, email, person_id) VALUES (login, crypt(password, gen_salt('md5')), email, per_id);
+end;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER;
 
 SELECT * FROM registration('Vasyewfewa3', '123', 'rfew2@mail.ru', 'Ва11', 'неженат');
 
