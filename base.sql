@@ -145,3 +145,10 @@ $$
 LANGUAGE plpgsql SECURITY DEFINER;
 
 SELECT * FROM authentication('Vasya', '123456')
+
+
+CREATE TABLE tag_post (
+	post_id int REFERENCES post(id), 
+	tag_id int REFERENCES tag(id), 
+	PRIMARY KEY(post_id, tag_id)
+)
