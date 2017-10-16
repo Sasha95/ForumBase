@@ -6,3 +6,5 @@ USING (current_setting('jwt.user_id')::int IN (SELECT person_id FROM post WHERE 
 
 
 GRANT ALL ON forum.tag_post TO user_mangir;
+
+--UPDATE tag_post SET tag_id = 7 WHERE post_id=1 AND tag_id=4;
