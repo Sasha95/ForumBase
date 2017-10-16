@@ -1,24 +1,8 @@
-DROP FUNCTION title_up_in(varchar(200), text, integer);
-CREATE OR REPLACE FUNCTION title_up_in(title2 varchar(200), post2 text, person_id integer) RETURNS post AS 
-$$
-declare 
-flag boolean=false;
-p post;
-begin
-for p in (SELECT * FROM post as pos WHERE pos.title=title2)
-	loop
-		flag = true;
-		UPDATE post SET post=post2 WHERE id=p.id; 
-	end loop;
-if not flag THEN
-	INSERT INTO post (title, post, person_id) VALUES (title_up_in.title, title_up_in.post, title_up_in.person_id);
-end if;
+SET ROLE user_mangir;
+SET "jwt.user_id" TO 2;
+DROP POLICY tag_post_update ON forum.post;
+CREATE POLICY tag_post_update ON forum.post FOR UPDATE TO user_mangir
+USING (current_setting('jwt.user_id')::int IN (SELECT person_id FROM post WHERE post_id=id));
 
-end;
-$$ 
-LANGUAGE plpgsql;
 
-SELECT * FROM title_up_in('тест', 'f3ewfgwehfgvregregerhnjhruerhj', 1);
-
-________________________________________________________________________
-почему Serial  инкрементируется при  каждом запросе? О_О
+GRANT ALL ON forum.tag_post TO user_mangir;
