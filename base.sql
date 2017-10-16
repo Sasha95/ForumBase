@@ -194,3 +194,13 @@ SET "jwt.user_id" TO 2;
 RESET ROLE;
 CREATE POLICY delete_post ON forum.post FOR DELETE TO user_mangir
 USING (current_setting('jwt.user_id')::int=person_id);
+
+INSERT INTO tag VALUES 
+(default, 'песни'),
+(default, 'игры');
+
+INSERT INTO tag_post VALUES 
+(1, 8),
+(1, 9);
+
+
