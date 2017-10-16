@@ -183,6 +183,9 @@ USING (true);
 CREATE POLICY read_post1 ON forum.post FOR UPDATE TO user_mangir
 USING (current_setting('jwt.user_id')::int=person_id);
 
+CREATE POLICY read_tag ON forum.post FOR SELECT TO admin_mangir, moderator_mangir, user_mangir, anonim_mangir
+USING (true);
+
 SET ROLE user_mangir;
 SET "jwt.user_id" TO 2;
 
