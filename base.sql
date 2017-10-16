@@ -176,6 +176,7 @@ ALTER TABLE forum.likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE forum.person ENABLE ROW LEVEL SECURITY;
 ALTER TABLE forum.likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE forum.person ENABLE ROW LEVEL SECURITY;
+ALTER TABLE forum.tag ENABLE ROW LEVEL SECURITY;
 CREATE POLICY read_post ON forum.post FOR SELECT TO admin_mangir, moderator_mangir, user_mangir, anonim_mangir
 USING (true);
 
