@@ -152,3 +152,41 @@ CREATE TABLE tag_post (
 	tag_id int REFERENCES tag(id), 
 	PRIMARY KEY(post_id, tag_id)
 )
+
+GRANT admin_mangir, moderator_mangir, user_mangir, anonim_mangir TO mangir TO mangir;
+
+SET ROLE admin_mangir;
+
+GRANT USAGE ON schema forum TO admin_mangir, moderator_mangir, user_mangir, anonim_mangir;
+GRANT ALL ON forum.post TO admin_mangir, moderator_mangir, user_mangir;
+GRANT ALL ON forum.account TO admin_mangir;
+GRANT ALL ON forum.likes TO admin_mangir, moderator_mangir;
+GRANT ALL ON forum.person TO admin_mangir, moderator_mangir;
+GRANT ALL ON forum.tag TO admin_mangir, moderator_mangir;
+GRANT ALL ON forum.tag_post TO admin_mangir, moderator_mangir;
+
+GRANT SELECT, UPDATE, DELETE ON forum.post, forum.likes, forum.person TO user_mangir;
+GRANT SELECT ON forum.account, forum.person TO user_mangir;
+GRANT ALL ON forum.post,forum.account,forum.likes,forum.person,forum.tag,forum.tag_post TO moderator_mangir;
+GRANT ALL ON forum.post,forum.account,forum.likes,forum.person,forum.tag,forum.tag_post TO admin_mangir;
+GRANT SELECT ON forum.account TO moderator_mangir;
+GRANT SELECT, UPDATE ON forum.account TO admin_mangir;
+ALTER TABLE forum.post ENABLE ROW LEVEL SECURITY;
+ALTER TABLE forum.likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE forum.person ENABLE ROW LEVEL SECURITY;
+ALTER TABLE forum.likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE forum.person ENABLE ROW LEVEL SECURITY;
+CREATE POLICY read_post ON forum.post FOR SELECT TO admin_mangir, moderator_mangir, user_mangir, anonim_mangir
+USING (true);
+
+CREATE POLICY read_post1 ON forum.post FOR UPDATE TO user_mangir
+USING (current_setting('jwt.user_id')::int=person_id);
+
+SET ROLE user_mangir;
+SET "jwt.user_id" TO 2;
+
+--UPDATE post SET title='jrthr' WHERE id=2;
+
+RESET ROLE;
+CREATE POLICY delete_post ON forum.post FOR DELETE TO user_mangir
+USING (current_setting('jwt.user_id')::int=person_id);
