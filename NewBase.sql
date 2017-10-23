@@ -133,7 +133,22 @@ commit;
 ---------------------------------------------------------------------------------------------------------
 
 --CREATE INDEX post_index ON post USING GIN (to_tsvector('english', title ||' '|| body));
+
 SELECT ts_headline('english', body,  'porro <3> fugiat'), ts_rank(to_tsvector('english', title ||' '|| body), to_tsquery('english', 'porro <3> fugiat')) FROM post 
 WHERE to_tsvector('english', title ||' '|| body) @@ to_tsquery('english', 'porro <3> fugiat') ORDER BY ts_rank DESC;
 
 --EXPLAIN ANALYSE 
+
+
+
+CREATE VIEW posts_with_short_title AS 
+SELECT 
+	title,
+	count(part)
+FROM (
+	SELECT 
+		id, 
+		regexp_split_to_table(title, E'\\s+') AS part,
+		title
+	FROM post) AS split_title 
+GROUP BY title HAVING count(part) <= 3;
