@@ -129,3 +129,10 @@ USING (current_setting('jwt.user_id')::int=person_id);
 
 commit;
 
+
+---------------------------------------------------------------------------------------------------------
+
+--CREATE INDEX post_index ON post USING GIN (to_tsvector('english', title ||' '|| body));
+EXPLAIN ANALYSE SELECT * FROM post WHERE to_tsvector('english', title ||' '|| body) @@ to_tsquery('english', 'porro & fugiat');
+
+--SELECT title FROM post 
