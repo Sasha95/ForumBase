@@ -1,10 +1,17 @@
-SET ROLE user_mangir;
-SET "jwt.user_id" TO 2;
-DROP POLICY tag_post_update ON forum.post;
-CREATE POLICY tag_post_update ON forum.post FOR UPDATE TO user_mangir
-USING (current_setting('jwt.user_id')::int IN (SELECT person_id FROM post WHERE post_id=id));
+/*CREATE OR REPLACE FUNCTION all_comments(post_id int) RETURNS SETOF RECORD AS
+$$
+BEGIN
+	RETURN */
+		WITH RECURSIVE included_comments(post_holder_id, id) AS (
+		SELECT post_holder_id, id FROM post WHERE id = 5
+		UNION ALL
+		    SELECT pr.post_holder_id, pr.id
+		    FROM included_comments pr, post p
+		    WHERE p.id = pr.id
+		  )
+		SELECT post_holder_id, id FROM included_comments limit 1000
+/*END;
+$$ 
+LANGUAGE plpgsql; 
 
-
-GRANT ALL ON forum.tag_post TO user_mangir;
-
---UPDATE tag_post SET tag_id = 7 WHERE post_id=1 AND tag_id=4;
+SELECT all_comments(5)*/
