@@ -152,3 +152,14 @@ FROM (
 		title
 	FROM post) AS split_title 
 GROUP BY title HAVING count(part) <= 3;
+
+
+CREATE OR REPLACE FUNCTION random_number(a int, b int) RETURNS int AS
+$$
+BEGIN
+	RETURN floor(a+random()*(b-a+1));
+END;
+$$ 
+LANGUAGE plpgsql SECURITY DEFINER;
+
+UPDATE post SET post_holder_id = random_number(601, 1300) WHERE id BETWEEN 1301 AND 2000
