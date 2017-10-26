@@ -3,11 +3,13 @@ $$
 BEGIN
 	RETURN */
 		WITH RECURSIVE included_comments(post_holder_id, id) AS (
-		SELECT post_holder_id, id FROM post WHERE id = 5
+		  SELECT post_holder_id, id FROM post WHERE post_holder_id = 1
 		UNION ALL
-		    SELECT pr.post_holder_id, pr.id
-		    FROM included_comments pr, post p
-		    WHERE p.id = pr.id
+		    SELECT
+			included_comments.post_holder_id,
+			included_comments.id
+		    FROM included_comments, post 
+		    WHERE included_comments.post_holder_id=included_comments.id
 		  )
 		SELECT post_holder_id, id FROM included_comments limit 1000
 /*END;
