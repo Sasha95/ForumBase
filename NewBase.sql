@@ -175,3 +175,26 @@ WITH RECURSIVE included_comments(post_holder_id, id) AS (
 		    WHERE included_comments.id=post.post_holder_id
 		  )
 SELECT count(id) FROM included_comments
+
+-----------------------------------------------------
+CREATE OR REPLACE FUNCTION main_post(comment_id int) RETURNS int AS
+$$
+declare post_id int;
+
+BEGIN 
+		WITH RECURSIVE included_comments(post_holder_id) AS (
+		  SELECT post_holder_id, id FROM post WHERE id=comment_id
+		UNION ALL
+		    SELECT
+			post.post_holder_id,
+			post.id
+		    FROM included_comments, post 
+		    WHERE post.id=included_comments.post_holder_id
+		  )
+		 SELECT INTO post_id (array(SELECT id FROM included_comments)::integer[])[count(id)] FROM included_comments;
+		 RETURN post_id;
+END;
+$$ 
+LANGUAGE plpgsql; 
+
+SELECT main_post(885)
