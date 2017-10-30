@@ -3,15 +3,15 @@ $$
 BEGIN
 	RETURN */
 		WITH RECURSIVE included_comments(post_holder_id, id) AS (
-		  SELECT post_holder_id, id FROM post WHERE post_holder_id = 1
+		  SELECT post_holder_id, id FROM post WHERE post_holder_id BETWEEN 1 AND 200
 		UNION ALL
 		    SELECT
-			included_comments.post_holder_id,
-			included_comments.id
+			post.post_holder_id,
+			post.id
 		    FROM included_comments, post 
-		    WHERE included_comments.post_holder_id=included_comments.id
+		    WHERE included_comments.id=post.post_holder_id
 		  )
-		SELECT post_holder_id, id FROM included_comments limit 1000
+		SELECT count(id) FROM included_comments limit 1000
 /*END;
 $$ 
 LANGUAGE plpgsql; 
