@@ -163,3 +163,15 @@ $$
 LANGUAGE plpgsql SECURITY DEFINER;
 
 UPDATE post SET post_holder_id = random_number(601, 1300) WHERE id BETWEEN 1301 AND 2000
+
+--------------------------------------
+WITH RECURSIVE included_comments(post_holder_id, id) AS (
+		  SELECT post_holder_id, id FROM post WHERE post_holder_id BETWEEN 1 AND 200
+		UNION ALL
+		    SELECT
+			post.post_holder_id,
+			post.id
+		    FROM included_comments, post 
+		    WHERE included_comments.id=post.post_holder_id
+		  )
+SELECT count(id) FROM included_comments
