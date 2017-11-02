@@ -198,3 +198,12 @@ $$
 LANGUAGE plpgsql; 
 
 SELECT main_post(885)
+
+------------------------------------------------------------
+
+
+
+WITH post_parts AS (SELECT id, translate(regexp_split_to_table(body, E'\\s+'), $$.,\n\r$$, '') AS part FROM post WHERE id BETWEEN 1 AND 200),
+count_post AS (SELECT count(id) from (SELECT distinct id FROM post_parts) as p),
+men AS (SELECT * FROM post_parts WHERE char_length(part)>3)
+INSERT INTO tag (name) (SELECT part FROM men GROUP BY part HAVING count(*)>3*(SELECT count from count_post))
