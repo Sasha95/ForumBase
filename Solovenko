@@ -1,1 +1,12 @@
 INSERT INTO post_tag (post_id, tag_id) (with postt as SELECT id, random_number(1, count(tag.id)) FROM paost, tag)
+
+
+
+
+--SELECT regexp_replace('dhbn nn     hs grr', '(\s{2,})', ' ', 'g' )
+
+--SELECT '123456'~'(?<=[0,2,4,6,8])\d(?=)'
+
+--SELECT regexp_replace('123456', '(?<=[0,2,4,6,8])\d(?=)', '*\&*', 'g')
+
+--SELECT '1010' ~ '^(\d+)\1$'
