@@ -10,3 +10,7 @@ INSERT INTO post_tag (post_id, tag_id) (with postt as SELECT id, random_number(1
 --SELECT regexp_replace('123456', '(?<=[0,2,4,6,8])\d(?=)', '*\&*', 'g')
 
 --SELECT '1010' ~ '^(\d+)\1$'
+
+--SELECT 	'/path/pp' ~ '^/([a-z]+/)*([a-z]+)?$'
+--SELECT '/forum/33/g' ~ '^(/forum/:post/:comment)$'
+SELECT '/forum/33/g' ~ ('^'|| regexp_replace('/forum/:post/:comment', ':\w+','\w+', 'g') || '/?$')
